@@ -1,5 +1,6 @@
-#include "ipc.hpp"
 #include <gtest/gtest.h>
+
+#include "auto_system_api/backend/ipc_backend.hpp"
 
 namespace ipc_backend = auto_system_api::ipc::backend;
 
