@@ -6,15 +6,20 @@
 #include <stdexcept>
 #include <string>
 
-namespace auto_system_api {
-namespace ipc {
-namespace backend {
-void posix_shm_close(void* ptr, int64_t size, int fd){
+namespace auto_system_api
+{
+namespace ipc
+{
+namespace backend
+{
+void posix_shm_close(void * ptr, int64_t size, int fd)
+{
   munmap(ptr, size);
   close(fd);
 }
 
-void posix_shm_allocate(std::string name, int64_t size) {
+void posix_shm_allocate(const std::string & name, int64_t size)
+{
   const auto shm_fd = shm_open(name.c_str(), O_RDWR | O_CREAT, 0666);
   if (shm_fd == -1) {
     throw std::runtime_error("Failed to open shared memory: " + name);
@@ -31,11 +36,13 @@ void posix_shm_allocate(std::string name, int64_t size) {
     throw std::runtime_error("Failed to map shared memory: " + name);
   }
 
-  std::fill_n(static_cast<char*>(ptr), size, 0);
+  std::fill_n(static_cast<char *>(ptr), size, 0);
   posix_shm_close(ptr, size, shm_fd);
 }
 
-auto posix_shm_get_addr(std::string name, int64_t size, bool is_write = false) -> std::pair<void*, int> {
+auto posix_shm_get_addr(const std::string & name, int64_t size, bool is_write = false)
+  -> std::pair<void *, int>
+{
   const auto shm_fd = shm_open(name.c_str(), is_write ? O_RDWR : O_RDONLY, 0666);
   if (shm_fd == -1) {
     throw std::runtime_error("Failed to open shared memory: " + name);
@@ -50,10 +57,11 @@ auto posix_shm_get_addr(std::string name, int64_t size, bool is_write = false) -
   return std::make_pair(ptr, shm_fd);
 }
 
-void posix_shm_remove(std::string name){
+void posix_shm_remove(const std::string & name)
+{
   if (shm_unlink(name.c_str()) == -1) {
     throw std::runtime_error("Failed to unlink shared memory: " + name);
-}
+  }
 }
 }  // namespace backend
 }  // namespace ipc
