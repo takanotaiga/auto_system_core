@@ -16,6 +16,9 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
+    - name: Create build directory
+      run: mkdir -p auto_system_api/build
+
     - name: Configure CMake
       working-directory: ${{github.workspace}}/auto_system_api/build
       run: cmake .. -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
