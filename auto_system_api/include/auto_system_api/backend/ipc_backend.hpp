@@ -22,6 +22,8 @@ auto posix_shm_get_addr(const std::string & name, int64_t size, bool is_write = 
   -> std::pair<void *, int>;
 
 void posix_shm_remove(const std::string & name);
+
+void posix_shm_name_check(const std::string & name);
 }  // namespace backend
 }  // namespace ipc
 }  // namespace auto_system_api

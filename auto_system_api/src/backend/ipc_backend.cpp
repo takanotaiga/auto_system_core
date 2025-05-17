@@ -57,6 +57,36 @@ void posix_shm_remove(const std::string & name)
     throw std::runtime_error("Failed to unlink shared memory: " + name);
   }
 }
+
+void posix_shm_name_check(const std::string & name)
+{
+  const auto isLowerSnakeCase = [](const std::string & name) {
+    if (name.empty() || name.front() == '_' || name.back() == '_') {
+      return false;
+    }
+
+    bool prevUnderscore = false;
+    for (char ch : name) {
+      if (ch == '_') {
+        if (prevUnderscore) return false;
+        prevUnderscore = true;
+      } else {
+        if (!std::isalpha(ch) || !std::islower(ch)) return false;
+        prevUnderscore = false;
+      }
+    }
+    return true;
+  };
+
+  if (name.length() > 128) {
+    throw std::runtime_error(name + " is too long.");
+  }
+
+  if (!isLowerSnakeCase(name)) {
+    throw std::runtime_error(
+      name + " is not in lower_snake_case. SHM names must be in lower_snake_case.");
+  }
+}
 }  // namespace backend
 }  // namespace ipc
 }  // namespace auto_system_api

@@ -3,10 +3,17 @@ project(auto_system_api)
 
 set(CMAKE_CXX_STANDARD 20)
 
-add_library(ipc_backend STATIC src/backend/ipc_backend.cpp)
-target_include_directories(ipc_backend PUBLIC
+add_library(auto_system_api STATIC 
+  src/backend/ipc_backend.cpp
+)
+target_include_directories(auto_system_api PUBLIC
   ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
+# add_library(ipc STATIC src/ipc.cpp)
+# target_include_directories(ipc PUBLIC
+#   ${CMAKE_CURRENT_SOURCE_DIR}/include
+#   ipc_backend
+# )
 
 # # read.cpp 実行ファイル
 # add_executable(read_exec read.cpp)
@@ -37,7 +44,7 @@ enable_testing()
 add_executable(test_ipc_backend test/test_ipc_backend.cpp)
 target_link_libraries(test_ipc_backend
   PRIVATE
-    ipc_backend
+    auto_system_api
     gtest_main
 )
 
