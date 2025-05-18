@@ -1,0 +1,9 @@
+cxx_test(
+  name = "test_ipc_backend",
+  srcs = ["test_ipc_backend.cpp"],
+  deps = [
+        "//auto_system_api:auto_system_api",
+        "gtest//:gtest",
+    ],
+  compiler_flags = ["-std=c++17"],
+)

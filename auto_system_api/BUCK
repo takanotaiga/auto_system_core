@@ -1,0 +1,8 @@
+cxx_library(
+    name = "auto_system_api",
+    srcs = glob(["src/**/*.cpp"]),
+    headers = glob(["include/**/*.hpp"]),
+    exported_headers = glob(["include/**/*.hpp"]),
+    public_include_directories = ["include"],
+    visibility = ["PUBLIC"]
+)
