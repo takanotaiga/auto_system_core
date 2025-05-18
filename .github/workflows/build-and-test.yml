@@ -20,9 +20,9 @@ jobs:
     - name: Setup gtest
       uses: actions/checkout@v4
       with:
-        fetch-depth: 0
-        repository: https://github.com/takanotaiga/gtest.git
+        repository: takanotaiga/gtest
         path: third_party/gtest
+        fetch-depth: 0
 
     - name: Build
       run: buck2 build //...
