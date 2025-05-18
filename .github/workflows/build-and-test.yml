@@ -16,7 +16,16 @@ jobs:
     container: ghcr.io/takanotaiga/buck2_docker:latest
     steps:
     - uses: actions/checkout@v4
+
+    - name: Setup gtest
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+        repository: https://github.com/takanotaiga/gtest.git
+        path: third_party/gtest
+
     - name: Build
       run: buck2 build //...
+
     - name: Auto System API Test
       run: buck2 test //auto_system_api/test:test_ipc_backend
