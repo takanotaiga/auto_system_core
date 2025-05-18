@@ -5,6 +5,7 @@
     ```bash
     git clone git@github.com:takanotaiga/auto_system_core.git
     cd auto_system_core
+    git clone https://github.com/takanotaiga/gtest.git third_party/gtest
     ./run.sh
     ```
 2. Compile with buck2
