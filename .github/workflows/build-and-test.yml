@@ -12,21 +12,10 @@ env:
 jobs:
   build:
     runs-on: ubuntu-22.04
-
+    container: ghcr.io/takanotaiga/buck2_docker:latest
     steps:
     - uses: actions/checkout@v4
-
-    - name: Create build directory
-      run: mkdir -p auto_system_api/build
-
-    - name: Configure CMake
-      working-directory: ${{github.workspace}}/auto_system_api/build
-      run: cmake .. -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
-
     - name: Build
-      working-directory: ${{github.workspace}}/auto_system_api/build
-      run: make
-
-    - name: Test
-      working-directory: ${{github.workspace}}/auto_system_api/build
-      run: ctest -C ${{env.BUILD_TYPE}}
+      run: buck2 build //...
+    - name: Auto System API Test
+      run: buck2 test //auto_system_api/test:test_ipc_backend
