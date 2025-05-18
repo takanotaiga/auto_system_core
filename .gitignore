@@ -4,3 +4,6 @@
 build
 buck-out
 third_party
+
+docs/.vitepress/dist
+docs/.vitepress/cache
