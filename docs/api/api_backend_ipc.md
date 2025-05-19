@@ -156,7 +156,7 @@ void posix_mq_create(const std::string & name);
 ### パラメーター
 
 - **`name`**: 
-キューの名前。
+キューの名前。lower_snake_caseであることと先頭に`/`が記載されている必要があります。
 
 ### 戻り値
 この関数は値を返しません。
