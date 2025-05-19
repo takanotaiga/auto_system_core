@@ -14,7 +14,7 @@ void posix_shm_close(void * ptr, int64_t size, int fd)
 
 void posix_shm_allocate(const std::string & name, int64_t size)
 {
-  const auto shm_fd = shm_open(name.c_str(), O_RDWR | O_CREAT, 0666);
+  const auto shm_fd = shm_open(name.c_str(), O_RDWR | O_CREAT, S_IRWXU);
   if (shm_fd == -1) {
     throw std::runtime_error("Failed to open shared memory: " + name);
   }
@@ -37,7 +37,7 @@ void posix_shm_allocate(const std::string & name, int64_t size)
 auto posix_shm_get_addr(const std::string & name, int64_t size, bool is_write)
   -> std::pair<void *, int>
 {
-  const auto shm_fd = shm_open(name.c_str(), is_write ? O_RDWR : O_RDONLY, 0666);
+  const auto shm_fd = shm_open(name.c_str(), is_write ? O_RDWR : O_RDONLY, S_IRWXU);
   if (shm_fd == -1) {
     throw std::runtime_error("Failed to open shared memory: " + name);
   }
@@ -51,10 +51,10 @@ auto posix_shm_get_addr(const std::string & name, int64_t size, bool is_write)
   return std::make_pair(ptr, shm_fd);
 }
 
-void posix_shm_remove(const std::string & name)
+void posix_shm_dispose(const std::string & name)
 {
   if (shm_unlink(name.c_str()) == -1) {
-    throw std::runtime_error("Failed to unlink shared memory: " + name);
+    throw std::runtime_error("Failed to dispose shared memory: " + name);
   }
 }
 
@@ -85,6 +85,22 @@ void posix_shm_name_check(const std::string & name)
   if (!isLowerSnakeCase(name)) {
     throw std::runtime_error(
       name + " is not in lower_snake_case. SHM names must be in lower_snake_case.");
+  }
+}
+
+void posix_mq_create(const std::string & name)
+{
+  const auto queue = mq_open(name.c_str(), O_CREAT | O_EXCL | O_RDONLY, S_IRWXU, NULL);
+  if (queue == -1) {
+    throw std::runtime_error("Failed to create message queue: " + name);
+  }
+  mq_close(queue);
+}
+
+void posix_mq_dispose(const std::string & name)
+{
+  if (mq_unlink(name.c_str()) == -1) {
+    throw std::runtime_error("Failed to dispose message queue: " + name);
   }
 }
 }  // namespace backend

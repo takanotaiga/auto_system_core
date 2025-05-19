@@ -96,7 +96,7 @@ auto posix_shm_get_addr(const std::string & name, int64_t size, bool is_write = 
 - 存在しないパイプラインを指定した場合
 - `size`が実態よりオーバーフローしていた場合
 
-## posix_shm_remove
+## posix_shm_dispose
 共有メモリパイプラインを完全に削除します。
 
 ### 定義
@@ -104,7 +104,7 @@ auto posix_shm_get_addr(const std::string & name, int64_t size, bool is_write = 
 `auto_system_api/include/auto_system_api/backend/ipc_backend.hpp`
 
 ```c++
-void posix_shm_remove(const std::string & name);
+void posix_shm_dispose(const std::string & name);
 ```
 
 ### パラメーター
@@ -140,3 +140,51 @@ void posix_shm_name_check(const std::string & name);
 ### 例外
 - 128文字以上の場合
 - lower_snake_case以外の文字列が渡された場合
+
+
+## posix_mq_create
+メッセージキューを作成します。
+
+### 定義
+
+`auto_system_api/include/auto_system_api/backend/ipc_backend.hpp`
+
+```c++
+void posix_mq_create(const std::string & name);
+```
+
+### パラメーター
+
+- **`name`**: 
+キューの名前。
+
+### 戻り値
+この関数は値を返しません。
+
+### 例外
+- 不正な名前が指定された場合
+- すでに同名のキューが存在した場合
+
+
+## posix_mq_dispose
+メッセージキューを削除します。
+
+### 定義
+
+`auto_system_api/include/auto_system_api/backend/ipc_backend.hpp`
+
+```c++
+void posix_mq_dispose(const std::string & name);
+```
+
+### パラメーター
+
+- **`name`**: 
+キューの名前。
+
+### 戻り値
+この関数は値を返しません。
+
+### 例外
+- 不正な名前が指定された場合
+- 指定されたキューが存在しない場合
