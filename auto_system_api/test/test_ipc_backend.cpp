@@ -16,8 +16,6 @@ TEST(PosixShmLifecycle, SimpleShardMemoryCheck)
     int & memptr = *static_cast<int *>(ptr);
     memptr = 10;
     before = memptr;
-    printf("[Writer] Wrote message: %d\n", memptr);
-
     ipc_backend::posix_shm_close(ptr, 4096, fd);
   }
 
@@ -26,10 +24,8 @@ TEST(PosixShmLifecycle, SimpleShardMemoryCheck)
     const auto [ptr, fd] = ipc_backend::posix_shm_get_addr(shm_name, 4096);
 
     after = *static_cast<int *>(ptr);
-    printf("[Reader] Read message: %d\n", *static_cast<int *>(ptr));
-
     ipc_backend::posix_shm_close(ptr, 4096, fd);
-    ipc_backend::posix_shm_remove(shm_name);
+    ipc_backend::posix_shm_dispose(shm_name);
   }
 
   EXPECT_EQ(before, after);
@@ -61,4 +57,15 @@ TEST(PosixShmNameCheck, InvalidCharacters)
   EXPECT_THROW(ipc_backend::posix_shm_name_check("end_underscore_"), std::runtime_error);
   EXPECT_THROW(ipc_backend::posix_shm_name_check("double__underscore"), std::runtime_error);
   EXPECT_THROW(ipc_backend::posix_shm_name_check("HasUpperCase"), std::runtime_error);
+}
+
+TEST(PosixMQLifecycle, SimpleMQCheck)
+{
+  const auto mq_name = "/autosystem_mq";
+  EXPECT_NO_THROW(ipc_backend::posix_mq_create(mq_name));
+  EXPECT_THROW(ipc_backend::posix_mq_create(mq_name), std::runtime_error);
+  EXPECT_NO_THROW(ipc_backend::posix_mq_send(mq_name, "HelloWorld", 11));
+  EXPECT_NO_THROW(ipc_backend::posix_mq_dispose(mq_name));
+  EXPECT_THROW(ipc_backend::posix_mq_dispose(mq_name), std::runtime_error);
+  EXPECT_THROW(ipc_backend::posix_mq_send(mq_name, "HelloWorld", 11), std::runtime_error);
 }
