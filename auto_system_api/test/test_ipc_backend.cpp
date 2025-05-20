@@ -64,6 +64,8 @@ TEST(PosixMQLifecycle, SimpleMQCheck)
   const auto mq_name = "/autosystem_mq";
   EXPECT_NO_THROW(ipc_backend::posix_mq_create(mq_name));
   EXPECT_THROW(ipc_backend::posix_mq_create(mq_name), std::runtime_error);
+  EXPECT_NO_THROW(ipc_backend::posix_mq_send(mq_name, "HelloWorld", 11));
   EXPECT_NO_THROW(ipc_backend::posix_mq_dispose(mq_name));
   EXPECT_THROW(ipc_backend::posix_mq_dispose(mq_name), std::runtime_error);
+  EXPECT_THROW(ipc_backend::posix_mq_send(mq_name, "HelloWorld", 11), std::runtime_error);
 }

@@ -165,6 +165,35 @@ void posix_mq_create(const std::string & name);
 - 不正な名前が指定された場合
 - すでに同名のキューが存在した場合
 
+## posix_mq_send
+メッセージキューを送信します。
+
+### 定義
+
+`auto_system_api/include/auto_system_api/backend/ipc_backend.hpp`
+
+```c++
+void posix_mq_send(const std::string & name, const void * payload, int64_t size);
+```
+
+### パラメーター
+
+- **`name`**: 
+キューの名前。lower_snake_caseであることと先頭に`/`が記載されている必要があります。
+
+- **`payload`**: 
+送信するデータのポインタを指定します。
+
+- **`size`**: 
+送信するデータのサイズを指定します。
+
+### 戻り値
+この関数は値を返しません。
+
+### 例外
+- 不正な名前が指定された場合
+- すでに同名のキューが存在した場合
+- 送信に失敗した場合。
 
 ## posix_mq_dispose
 メッセージキューを削除します。
